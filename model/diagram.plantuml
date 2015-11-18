@@ -1,0 +1,14 @@
+@startuml
+hide empty attributes
+hide empty methods
+skinparam shadowing false
+
+!include ../classes.plantuml
+
+main .> Outliner
+ASTVisitor <|-- Outliner
+Outliner -> "*" Classifier
+Outliner .> Field
+Outliner .> Method
+Outliner ..> outliner
+@enduml

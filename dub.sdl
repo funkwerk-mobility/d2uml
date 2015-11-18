@@ -1,0 +1,5 @@
+name "d2uml"
+description "Reverse engineering of D source code into PlantUML classes"
+authors "Mario Kröplin"
+license "BSL-1.0"
+dependency "libdparse" version="*"
