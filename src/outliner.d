@@ -364,12 +364,12 @@ struct Method
     }
 }
 
-private string escape(string source)
+private string escape(string source) pure
 {
     return source.replace(`\`, `\\`);
 }
 
-private const(Attribute[]) protectionAttributes(const Declaration declaration)
+private const(Attribute[]) protectionAttributes(const Declaration declaration) pure
 {
     const(Attribute)[] attributes = null;
     foreach (attribute; declaration.attributes)
@@ -377,12 +377,12 @@ private const(Attribute[]) protectionAttributes(const Declaration declaration)
     return attributes;
 }
 
-private const(Attribute[]) protectionAttributes(const Attribute attribute)
+private const(Attribute[]) protectionAttributes(const Attribute attribute) pure
 {
     return (attribute.attribute.type.isProtection) ? [attribute] : null;
 }
 
-private string toVisibility(const Token token)
+private string toVisibility(const Token token) pure
 in
 {
     assert(token.type.isProtection);
@@ -404,7 +404,7 @@ body
     }
 }
 
-private string[] modifiers(const Declaration declaration)
+private string[] modifiers(const Declaration declaration) pure
 {
     string[] modifiers = null;
     if (declaration.attributes.any!(a => a.attribute == tok!"abstract"))

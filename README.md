@@ -1,12 +1,20 @@
 D to UML
 ========
 
-This tool parses the given D source code
-and outputs corresponding [PlantUML](http://plantuml.com/) class descriptions.
-Also `struct`s and `module`s are represented as classes.
+UML diagrams can be helpful for code maintenance.
+But, drawing these diagrams with mouse and keyboard is a tedious task.
+And popular UML tools don't support reverse engineering for the
+[D programming language](http://dlang.org/).
 
-The renderer allows some tweaking for the directions of arrows,
-so that this tool does not even try to extract relations between classes.
+This pragmatic tool parses the given D source code
+and just extracts class outlines in the [PlantUML](http://plantuml.com/) language.
+Not only `class`es, but also `struct`s, and even `module`s are extracted as class outlines.
+
+A good arrangement of the classes is essential for creating effective UML diagrams.
+The means for tweaking the arrangement is to explicitly specify the direction of arrows:
+[Changing arrows direction](http://plantuml.com/classes.html#Direction).
+Artistic design, however, is beyond the capabilities of this simple tool.
+So, this tool does not even try to extract relations between classes.
 
 Usage
 -----
@@ -15,22 +23,38 @@ Use [dub](http://code.dlang.org/) to build the tool:
 
     dub build --build=release
 
-Use the _d2uml_ tool to extract the class descriptions from D source code.
+Use the tool to extract the class outlines from D source code.
+
 For example:
 
-    ./d2uml src/*.d > classes.plantuml
+    ./d2uml src/*.d > model/classes.plantuml
 
-In another file, use the `!include` directive to include the generated file.
-Add the relations between the classes.
+Create another file and explicitly specify the relations between the classes.
+Use the `!include` directive to include the generated file.
+
 For example:
-
 [model/diagram.plantuml](https://github.com/funkwerk/d2uml/blob/master/model/diagram.plantuml)
 
-Use the _plantuml.jar_ to generate the image of the diagram:
+    @startuml
+    hide empty attributes
+    hide empty methods
+    
+    !include classes.plantuml
+    
+    main .> Outliner
+    ASTVisitor <|-- Outliner
+    Outliner -> "*" Classifier
+    Classifier --> "*" Field
+    Classifier --> "*" Method
+    Outliner ..> outliner
+    @enduml
 
-    java -jar path/to/plantuml.*.jar model/diagram.plantuml
+Use [plantuml.jar](http://sourceforge.net/projects/plantuml/files/plantuml.jar/download)
+to generate the image of the diagram:
 
-Have a look at the resulting image _model/diagram.png_:
+    java -jar path/to/plantuml.jar model/diagram.plantuml
+
+Finally, have a look at the resulting image:
 
 ![model/diagram.png](https://raw.githubusercontent.com/wiki/funkwerk/d2uml/images/diagram.png)
 
