@@ -10,9 +10,9 @@ import std.array;
 import std.conv;
 import std.stdio;
 import std.typecons;
-import std.d.ast;
-import std.d.formatter;
-import std.d.lexer;
+import dparse.ast;
+import dparse.formatter;
+import dparse.lexer;
 
 class Outliner : ASTVisitor
 {
