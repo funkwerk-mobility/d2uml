@@ -41,8 +41,8 @@ body
 
 int process(string[] names)
 {
-    import std.d.lexer;
-    import std.d.parser;
+    import dparse.lexer;
+    import dparse.parser;
 
     bool success = true;
     StringCache cache = StringCache(StringCache.defaultBucketCount);
