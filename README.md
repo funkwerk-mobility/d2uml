@@ -1,6 +1,6 @@
 D to UML
-
 ========
+
 [![Build Status](https://travis-ci.org/funkwerk/d2uml.svg?branch=master)](https://travis-ci.org/funkwerk/d2uml)
 
 UML diagrams can be helpful for code maintenance.
