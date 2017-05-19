@@ -1,5 +1,7 @@
 D to UML
+
 ========
+[![Build Status](https://travis-ci.org/funkwerk/d2uml.svg?branch=master)](https://travis-ci.org/funkwerk/d2uml)
 
 UML diagrams can be helpful for code maintenance.
 But, drawing these diagrams with mouse and keyboard is a tedious task.
@@ -38,9 +40,9 @@ For example:
     @startuml
     hide empty attributes
     hide empty methods
-    
+
     !include classes.plantuml
-    
+
     main .> Outliner
     ASTVisitor <|-- Outliner
     Outliner -> "*" Classifier

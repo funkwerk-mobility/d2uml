@@ -5,14 +5,14 @@
 
 module outliner;
 
+import dparse.ast;
+import dparse.formatter;
+import dparse.lexer;
 import std.algorithm;
 import std.array;
 import std.conv;
 import std.stdio;
 import std.typecons;
-import dparse.ast;
-import dparse.formatter;
-import dparse.lexer;
 
 class Outliner : ASTVisitor
 {

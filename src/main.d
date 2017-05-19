@@ -15,7 +15,7 @@ in
 }
 body
 {
-    import std.getopt;
+    import std.getopt : defaultGetoptPrinter, getopt, GetOptException, GetoptResult;
     import std.path : baseName;
 
     GetoptResult result;
@@ -41,8 +41,8 @@ body
 
 int process(string[] names)
 {
-    import dparse.lexer;
-    import dparse.parser;
+    import dparse.lexer : getTokensForParser, LexerConfig, StringBehavior, StringCache;
+    import dparse.parser : parseModule;
 
     bool success = true;
     StringCache cache = StringCache(StringCache.defaultBucketCount);
@@ -51,12 +51,14 @@ int process(string[] names)
 
     void outline(ubyte[] sourceCode, string name)
     {
-        import std.typecons : scoped;
+        import dparse.rollback_allocator : RollbackAllocator;
         import outliner : Outliner;
+        import std.typecons : scoped;
 
         config.fileName = name;
         auto tokens = getTokensForParser(sourceCode, config, &cache);
-        auto module_ = parseModule(tokens, name, null, &messageFunction);
+        RollbackAllocator allocator;
+        auto module_ = parseModule(tokens, name, &allocator, &messageFunction);
         auto visitor = scoped!Outliner(stdout, name);
         visitor.visit(module_);
     }
@@ -65,7 +67,7 @@ int process(string[] names)
         outline(read(), "stdin");
     else
     {
-        import std.file;
+        import std.file : FileException, read;
 
         foreach (name; names)
         {
