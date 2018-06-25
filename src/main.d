@@ -58,7 +58,7 @@ int process(string[] names)
         config.fileName = name;
         auto tokens = getTokensForParser(sourceCode, config, &cache);
         RollbackAllocator allocator;
-        auto module_ = parseModule(tokens, name, &allocator, &messageFunction);
+        auto module_ = parseModule(tokens, name, &allocator);
         auto visitor = scoped!Outliner(stdout, name);
         visitor.visit(module_);
     }
@@ -97,9 +97,4 @@ ubyte[] read()
         content.put(slice);
     }
     return content.data;
-}
-
-void messageFunction(string, size_t, size_t, string, bool)
-{
-    // do nothing
 }
