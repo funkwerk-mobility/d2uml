@@ -166,13 +166,9 @@ class Outliner : ASTVisitor
             classifier.qualifiedName = [name];
             classifier.stereotype = "<<(M,gold)>>";
             classifier.write(output.lockingTextWriter);
-            hide(classifier.qualifiedName);
         }
         foreach (classifier; classifiers)
-        {
             classifier.write(output.lockingTextWriter);
-            hide(classifier.qualifiedName);
-        }
     }
 
     public override void visit(const SharedStaticConstructor sharedStaticConstructor)
@@ -247,13 +243,6 @@ class Outliner : ASTVisitor
             classifier.fields ~= field;
         }
     }
-
-    private void hide(in string[] qualifiedName)
-    {
-        output.writeln("!ifdef HIDE");
-        output.writefln("hide %-(%s.%)", qualifiedName);
-        output.writeln("!endif");
-    }
 }
 
 struct Classifier
@@ -286,6 +275,8 @@ struct Classifier
             sink.put(stereotype);
             sink.put(' ');
         }
+        sink.put("$generated");
+        sink.put(' ');
         sink.put("{");
         sink.put('\n');
         foreach (field; fields)
