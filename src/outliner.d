@@ -46,11 +46,13 @@ class Outliner : ASTVisitor
     public override void visit(const ClassDeclaration classDeclaration)
     {
         auto qualifiedName = classifier.qualifiedName;
+        auto fullyQualifiedName = classifier.fullyQualifiedName;
         auto outliner = scoped!Outliner(output, fileName);
         with (outliner)
         {
             classifier.type = "class";
             classifier.qualifiedName = qualifiedName ~ classDeclaration.name.text;
+            classifier.fullyQualifiedName = fullyQualifiedName ~ classDeclaration.name.text;
             classDeclaration.accept(outliner);
         }
         classifiers ~= outliner.classifier ~ outliner.classifiers;
@@ -90,11 +92,13 @@ class Outliner : ASTVisitor
     public override void visit(const EnumDeclaration enumDeclaration)
     {
         auto qualifiedName = classifier.qualifiedName;
+        auto fullyQualifiedName = classifier.fullyQualifiedName;
         auto outliner = scoped!Outliner(output, fileName);
         with (outliner)
         {
             classifier.type = "enum";
             classifier.qualifiedName = qualifiedName ~ enumDeclaration.name.text;
+            classifier.fullyQualifiedName = fullyQualifiedName ~ enumDeclaration.name.text;
             enumDeclaration.accept(outliner);
         }
         classifiers ~= outliner.classifier ~ outliner.classifiers;
@@ -132,11 +136,13 @@ class Outliner : ASTVisitor
     public override void visit(const InterfaceDeclaration interfaceDeclaration)
     {
         auto qualifiedName = classifier.qualifiedName;
+        auto fullyQualifiedName = classifier.fullyQualifiedName;
         auto outliner = scoped!Outliner(output, fileName);
         with (outliner)
         {
             classifier.type = "interface";
             classifier.qualifiedName = qualifiedName ~ interfaceDeclaration.name.text;
+            classifier.fullyQualifiedName = fullyQualifiedName ~ interfaceDeclaration.name.text;
             interfaceDeclaration.accept(outliner);
         }
         classifiers ~= outliner.classifier ~ outliner.classifiers;
@@ -150,6 +156,9 @@ class Outliner : ASTVisitor
     public override void visit(const Module module_)
     {
         import std.string : toLower;
+
+        classifier.fullyQualifiedName = module_.moduleDeclaration.moduleName.identifiers.map!"a.text".array;
+
         super.visit(module_);
         string name;
         if (module_.moduleDeclaration is null)
@@ -158,7 +167,9 @@ class Outliner : ASTVisitor
             name = fileName.stripExtension.baseName;
         }
         else
+        {
             name = module_.moduleDeclaration.moduleName.identifiers.back.text;
+        }
         name = name.toLower;  // XXX workaround for module Foo; class Foo;
         if (!classifier.fields.empty || !classifier.methods.empty)
         {
@@ -210,11 +221,13 @@ class Outliner : ASTVisitor
     public override void visit(const StructDeclaration structDeclaration)
     {
         auto qualifiedName = classifier.qualifiedName;
+        auto fullyQualifiedName = classifier.fullyQualifiedName;
         auto outliner = scoped!Outliner(output, fileName);
         with (outliner)
         {
             classifier.type = "class";
             classifier.qualifiedName = qualifiedName ~ structDeclaration.name.text;
+            classifier.fullyQualifiedName = fullyQualifiedName ~ structDeclaration.name.text;
             classifier.stereotype = "<<(S,silver)>>";
             structDeclaration.accept(outliner);
         }
@@ -253,6 +266,8 @@ struct Classifier
 
     string[] qualifiedName = null;
 
+    const(string)[] fullyQualifiedName = null;
+
     string stereotype;
 
     Field[] fields;
@@ -276,6 +291,14 @@ struct Classifier
             sink.put(' ');
         }
         sink.put("$generated");
+        sink.put(' ');
+        sink.put("$");
+        foreach (index, name; fullyQualifiedName)
+        {
+            if (index > 0)
+                sink.put('.');
+            sink.put(name);
+        }
         sink.put(' ');
         sink.put("{");
         sink.put('\n');
