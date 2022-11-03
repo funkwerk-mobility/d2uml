@@ -1,4 +1,3 @@
 .dub/
-dub.selections.json
 d2uml
 __test__library__
