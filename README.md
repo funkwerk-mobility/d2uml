@@ -1,7 +1,7 @@
 D to UML
 ========
 
-[![Build Status](https://travis-ci.org/funkwerk/d2uml.svg?branch=master)](https://travis-ci.org/funkwerk/d2uml)
+[![Build Status](https://github.com/funkwerk-mobility/d2uml/workflows/CI/badge.svg)](https://github.com/funkwerk-mobility/d2uml/actions?query=workflow%3ACI)
 
 UML diagrams can be helpful for code maintenance.
 But, drawing these diagrams with mouse and keyboard is a tedious task.
