@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push: ~
+  pull_request:
+    branches: [master]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup DMD
+      uses: dlang-community/setup-dlang@v1
+      with:
+        compiler: dmd-latest
+
+    - name: Build executable
+      run: |
+        dub build
+
+  audit:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup DMD
+      uses: dlang-community/setup-dlang@v1
+      with:
+        compiler: dmd-latest
+
+    - run: dub fetch dscanner@0.12.2
+    - run: dub run dscanner -- --styleCheck src
