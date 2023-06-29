@@ -2,7 +2,7 @@
 hide empty attributes
 hide empty methods
 
-!include classes.plantuml
+!include classes.puml
 
 main .> Outliner
 ASTVisitor <|-- Outliner
