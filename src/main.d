@@ -9,11 +9,7 @@ import std.array;
 import std.stdio;
 
 int main(string[] args)
-in
-{
-    assert(!args.empty);
-}
-body
+in (!args.empty)
 {
     import std.getopt : defaultGetoptPrinter, getopt, GetOptException, GetoptResult;
     import std.path : baseName;

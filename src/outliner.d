@@ -397,11 +397,7 @@ private const(Attribute[]) protectionAttributes(const Attribute attribute) pure
 }
 
 private string toVisibility(const Token token) pure
-in
-{
-    assert(token.type.isProtection);
-}
-body
+in (token.type.isProtection)
 {
     switch (token.type)
     {
