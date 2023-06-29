@@ -57,7 +57,8 @@ Use [plantuml.jar][] to generate the image of the diagram:
 
 Finally, have a look at the resulting image:
 
-![model/diagram.png](https://raw.githubusercontent.com/wiki/funkwerk/d2uml/images/diagram.png)
+![image](https://github.com/funkwerk-mobility/d2uml/assets/2083772/7d605072-1249-47a7-8c3c-69ca537bfea0)
+
 
 Related Projects
 ----------------
